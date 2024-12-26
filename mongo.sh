@@ -27,6 +27,7 @@ else
 fi
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo &>> "$LOG_FILE"
+validate $? "Repo file copied"
 
 dnf install mongodb-org -y &>> "$LOG_FILE"
 validate $? "mongodb Install" 
@@ -38,6 +39,7 @@ systemctl start mongod &>> "$LOG_FILE"
 validate $? "Service start"
 
 sudo sed -i 's/127\.0\.0\.1/0.0.0.0/g' /etc/mongod.conf &>> "$LOG_FILE"
+validate $? "Remote access to MongoDB"
 
 systemctl restart mongod &>> "$LOG_FILE"
 validate $? "Service restart"
